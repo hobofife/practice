@@ -1,0 +1,21 @@
+.dark-square {
+    background-color:#888000;
+    margin:0px;
+    text-align:center;
+    margin-bottom:5%;
+}
+
+.light-square {
+    background-color:#eee333;
+    margin:0px;
+    text-align:center;
+}
+
+.white-piece {
+    color:#FFF;
+}
+
+.black-piece {
+    color:#111;
+}
+

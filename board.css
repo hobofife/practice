@@ -37,3 +37,11 @@ board * {
 .black-piece {
     color:#111;
 }
+
+#piece-box .light-square {
+    background-color:#eee;
+}
+
+#piece-box .dark-square {
+    background-color:#edd;
+}

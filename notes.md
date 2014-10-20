@@ -61,3 +61,7 @@ Word. So one bug that I've been watching for a minute now is that pieces can cap
 1. place new pieces on the board
 2. remove pieces from board
 3. export position to FEN
+
+--
+
+Ok, so I have a box that holds extra pieces drawn on the side of the board (I anticipate options on how to draw the box). I have separate draggable callbacks to handle adding new pieces. I modified most of the orignal functions for drawing squares and pieces to let me pass in a object containing squares, where before I was just using the global `board` object. So whatever I can do to the chessboard, I can also do to the pieces box. Now I need some code to get the 'from' square when pulling a new piece out of the box, but I don't really feel like doing that just yet, so I'm gonna stop here for now and come back to it later.

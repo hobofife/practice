@@ -23,26 +23,26 @@ function getPositions(dimensions){
   }
 }
 
-function initialSquares(){
+function squareElements(parentDiv, squareData){
   var chessSquares = []
   var squareClasses = ["dark-square", "light-square"]
-  var squares = Object.keys(board)
+  var squares = Object.keys(squareData)
   for (var i=0; i < squares.length; i++){
     var newSquare = document.createElement('div')
     newSquare.setAttribute('id', squares[i])
-    var thisClass = squareClasses[board[squares[i]].color]
+    var thisClass = squareClasses[squareData[squares[i]].color]
     newSquare.setAttribute('class', thisClass)
-    boardDiv.appendChild(newSquare)
+    parentDiv.appendChild(newSquare)
     chessSquares.push(newSquare)
   }
   return chessSquares
 }
 
-function drawSquares(chessSquares, dimensions){
+function drawSquares(chessSquares, dimensions, squareData){
   for (var i=0; i<chessSquares.length; i++){
     var thisSquare = chessSquares[i]
-    var thisLeft = board[thisSquare.id].left
-    var thisTop = board[thisSquare.id].top
+    var thisLeft = squareData[thisSquare.id].left
+    var thisTop = squareData[thisSquare.id].top
     $(thisSquare).width(dimensions.squareSize)
     $(thisSquare).height(dimensions.squareSize)
     $(thisSquare).offset({top:thisTop, left:thisLeft})
@@ -70,7 +70,7 @@ function findSquare(x, y){
   return thisFile + thisRank
 }
 
-function setPiece(square, piece){
+function setPiece(square, piece, squareData){
   var pieces = {
     bking:'./pieces/bking.svg',
     bqueen:'./pieces/bqueen.svg',
@@ -86,38 +86,61 @@ function setPiece(square, piece){
     wpawn:'./pieces/wpawn.svg'
   }
   var newPiece = document.createElement('img')
-  board[square].piece = newPiece
-  newPiece.setAttribute('class', 'chess-piece')
-  newPiece.setAttribute('src', pieces[piece])
-  board[square].piece = newPiece
-}
-
-function drawPiece(square){
-  var piece = board[square].piece
-  boardDiv.appendChild(piece)
-  var thisLeft = board[square].left
-  var thisTop = board[square].top
-  $(piece).width(dimensions.squareSize)
-  $(piece).height(dimensions.squareSize)
-  $(piece).offset({top:thisTop, left:thisLeft})
-}
-
-function drawAllPieces(){
-  var squares = Object.keys(board)
-  for (var i=0; i<squares.length; i++){
-    if ($(board[squares[i]].piece).hasClass('chess-piece')){
-      drawPiece(squares[i])
-    }
+  squareData[square].piece = newPiece
+  // Should fix this: trying to determine if piece is in piecebox
+  if (squareData == window.piecebox){
+    $(newPiece).addClass('new-piece')
   }
+  $(newPiece).addClass('chess-piece')
+  newPiece.setAttribute('src', pieces[piece])
+  squareData[square].piece = newPiece
+}
+
+function drag(){
   $('.chess-piece').draggable(
     {start:function(e){
        squareStart = (findSquare(e.pageX, e.pageY))
+       $(e.target).css('zIndex', '10')
      },
      stop:function(e){
        squareEnd = (findSquare(e.pageX, e.pageY))
        movePiece(squareStart, squareEnd, e)
      }
     })
+  $('.new-piece').draggable(
+    {start:function(e){
+       console.log('k')
+     },
+     stop:function(e){
+       squareEnd = (findSquare(e.pageX, e.pageY))
+       newPiece(squareEnd, e)
+     }
+  })
+}
+
+function newPiece(){
+  console.log('yo!')
+}
+
+function drawPiece(square, squareData, parentDiv){
+  var piece = squareData[square].piece
+  parentDiv.appendChild(piece)
+  var thisLeft = squareData[square].left
+  var thisTop = squareData[square].top
+  $(piece).width(dimensions.squareSize)
+  $(piece).height(dimensions.squareSize)
+  $(piece).offset({top:thisTop, left:thisLeft})
+  drag()
+}
+
+function drawAllPieces(squareData, parentDiv){
+  var squares = Object.keys(squareData)
+  for (var i=0; i<squares.length; i++){
+    if ($(squareData[squares[i]].piece).hasClass('chess-piece')){
+      drawPiece(squares[i], squareData, parentDiv)
+    }
+  }
+  drag()
 }
 
 function removePiece(square){
@@ -162,30 +185,6 @@ function movePiece(squareFrom, squareTo, e){
   })
 }
 
-
-var boardDiv = document.getElementById('chessboard')
-var dimensions = getDimensions()
-getPositions(dimensions)
-var chessSquares = initialSquares()
-drawSquares(chessSquares, dimensions)
-// setPiece('e1', 'wking')
-// setPiece('e8', 'bking')
-// setPiece('f3', 'wknight')
-// drawAllPieces()
-var squareStart = ''
-var squareEnd = ''
-
-// $('.chess-piece').draggable(
-//   {start:function(e){
-//      squareStart = (findSquare(e.pageX, e.pageY))
-//    },
-//    stop:function(e){
-//      squareEnd = (findSquare(e.pageX, e.pageY))
-//      movePiece(squareStart, squareEnd, e)
-//    }
-   
-// })
-
 function setFromFEN(fen){
   function fenArray(rankFEN){
     var re = /\d/;
@@ -227,7 +226,7 @@ function setFromFEN(fen){
       var thisFile = chessFiles[k]
       var thisSquare = thisFile + thisRank
       if (pieces[rankArray[k]] != null){
-        setPiece(thisSquare, pieces[rankArray[k]])
+        setPiece(thisSquare, pieces[rankArray[k]], board)
       }
     }
   }
@@ -235,5 +234,13 @@ function setFromFEN(fen){
 
 var startPosition ='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+var boardDiv = document.getElementById('chessboard')
+var dimensions = getDimensions()
+getPositions(dimensions)
+var chessSquares = squareElements(boardDiv, board)
+drawSquares(chessSquares, dimensions, board)
+var squareStart = ''
+var squareEnd = ''
+
 setFromFEN(startPosition)
-drawAllPieces()
+drawAllPieces(board, boardDiv)

@@ -40,4 +40,24 @@ This must be a relative positioning thing, that's what I suspected. Removing a p
 *Setting `position:absolute;` for the squares and pieces fixed everything.
 
 
+-- Mon Oct 20 08:30:21 CDT 2014 --
 
+Uses SVG pieces now. Next thing is to make it read FEN and setup the board from that. Actually, no. Next I want to make draggable pieces snap to a square position when dropped and `movePiece()` to that square.
+
+--
+
+I need to change the movePiece animation... it currently calculates relative movement based on square positions, which isn't helpful if I've clicked and moved the image for the piece.
+
+Cool, that was easy.
+
+--
+
+Now, FEN.
+
+--
+
+Word. So one bug that I've been watching for a minute now is that pieces can capture themselves. I'll deal with that later, for now I want to add features for setting up the board through the UI.
+
+1. place new pieces on the board
+2. remove pieces from board
+3. export position to FEN

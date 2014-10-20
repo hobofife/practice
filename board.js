@@ -46,28 +46,49 @@ function drawSquares(chessSquares, dimensions){
     $(thisSquare).width(dimensions.squareSize)
     $(thisSquare).height(dimensions.squareSize)
     $(thisSquare).offset({top:thisTop, left:thisLeft})
-    // To Check:
-    // var thisText = document.createTextNode(thisSquare.id)
-    // $(thisSquare).append(thisText)
   }
 }
 
-function setPiece(square, piece, color){
-  // should add code to remove existing piece if 
-  // board[square].piece is not null
-  var colorClass = {white:'white-piece', black:'black-piece'}
-  var pieces = {king:'\u265A', queen:'\u265B', rook:'\u265C',
-                bishop:'\u265D', knight:'\u265E', pawn:'\u265F'}
-  var newPiece = document.createElement('div')
-  var pieceImage = document.createTextNode(pieces[piece])
-  $(newPiece).append(pieceImage)
-  $(newPiece).addClass('chess-piece')
-  $(newPiece).addClass(piece)
-  $(newPiece).addClass(colorClass[color])
-  // can I move font-size and line-height up to the boardDiv?
-  // Also, can't I set the height and width for all child element?
-  $(newPiece).css({'font-size': dimensions.squareSize + "px",
-                     'line-height': dimensions.squareSize + "px"})
+function findSquare(x, y){
+  var thisFile = ''
+  var thisRank = ''
+  var chessFileX = {a:board.a1.left, b:board.b1.left, c:board.c1.left,
+                    d:board.d1.left, e:board.e1.left, f:board.f1.left,
+                    g:board.g1.left, h:board.h1.left}
+  var chessFiles = Object.keys(chessFileX)
+  for (var i=0; i < chessFiles.length; i++ ){
+    if (x > chessFileX[chessFiles[i]]){ thisFile = chessFiles[i]}
+  }
+  var chessRankY = {1:board.a1.top, 2:board.a2.top, 3:board.a3.top,
+                    4:board.a4.top, 5:board.a5.top, 6:board.a6.top,
+                    7:board.a7.top, 8:board.a8.top}
+  // Need to reverse ranks to check 8th rank first and then subtract
+  var chessRanks = Object.keys(chessRankY).reverse()
+  for (var i=0; i < chessRanks.length; i++ ){
+    if (y > chessRankY[chessRanks[i]]){ thisRank = chessRanks[i]}
+  }
+  return thisFile + thisRank
+}
+
+function setPiece(square, piece){
+  var pieces = {
+    bking:'./pieces/bking.svg',
+    bqueen:'./pieces/bqueen.svg',
+    bbishop:'./pieces/bbishop.svg',
+    bknight:'./pieces/bknight.svg',
+    brook:'./pieces/brook.svg',
+    bpawn:'./pieces/bpawn.svg',
+    wking:'./pieces/wking.svg',
+    wqueen:'./pieces/wqueen.svg',
+    wbishop:'./pieces/wbishop.svg',
+    wknight:'./pieces/wknight.svg',
+    wrook:'./pieces/wrook.svg',
+    wpawn:'./pieces/wpawn.svg'
+  }
+  var newPiece = document.createElement('img')
+  board[square].piece = newPiece
+  newPiece.setAttribute('class', 'chess-piece')
+  newPiece.setAttribute('src', pieces[piece])
   board[square].piece = newPiece
 }
 
@@ -88,19 +109,27 @@ function drawAllPieces(){
       drawPiece(squares[i])
     }
   }
+  $('.chess-piece').draggable(
+    {start:function(e){
+       squareStart = (findSquare(e.pageX, e.pageY))
+     },
+     stop:function(e){
+       squareEnd = (findSquare(e.pageX, e.pageY))
+       movePiece(squareStart, squareEnd, e)
+     }
+    })
 }
 
 function removePiece(square){
   if (board[square].piece != null){
-    console.log(board[square].piece)
     boardDiv.removeChild(board[square].piece)
     board[square].piece = null
   }
 }
 
 function getMove(squareFrom, squareTo){
-  var moveTop = board[squareTo].top - board[squareFrom].top
-  var moveLeft = board[squareTo].left - board[squareFrom].left
+  var moveTop = board[squareTo].top - squareFrom.top
+  var moveLeft = board[squareTo].left - squareFrom.left
   if (moveTop<0) {
     moveTop = Math.abs(moveTop)
     moveTop = "-=" + moveTop.toString()
@@ -116,24 +145,95 @@ function getMove(squareFrom, squareTo){
   return [moveTop, moveLeft]
 }
 
-function movePiece(squareFrom, squareTo){
+function movePiece(squareFrom, squareTo, e){
+  var startPosition
   var piece = board[squareFrom].piece
-  var moves = getMove(squareFrom, squareTo)
+  if (e == undefined){startPosition = squareFrom }
+  else {startPosition = {
+    left:$(e.target).offset().left,
+    top:$(e.target).offset().top}}
+  var moves = getMove(startPosition, squareTo)
   $(piece).css("zIndex", 10)
-  $(piece).animate({top:moves[0],left:moves[1]}, 200)
-  $(piece).css("zIndex", 3)
-  removePiece(squareTo)
-  board[squareTo].piece = piece
-  board[squareFrom].piece = null
+  $(piece).animate({top:moves[0],left:moves[1]}, 200, function(){
+    $(piece).css("zIndex", 3)
+    removePiece(squareTo)
+    board[squareTo].piece = piece
+    board[squareFrom].piece = null
+  })
 }
+
 
 var boardDiv = document.getElementById('chessboard')
 var dimensions = getDimensions()
 getPositions(dimensions)
 var chessSquares = initialSquares()
 drawSquares(chessSquares, dimensions)
-setPiece('e1', 'king', 'white')
-setPiece('e7', 'king', 'black')
-setPiece('e5', 'knight', 'white')
-setPiece('c6', 'knight', 'black')
+// setPiece('e1', 'wking')
+// setPiece('e8', 'bking')
+// setPiece('f3', 'wknight')
+// drawAllPieces()
+var squareStart = ''
+var squareEnd = ''
+
+// $('.chess-piece').draggable(
+//   {start:function(e){
+//      squareStart = (findSquare(e.pageX, e.pageY))
+//    },
+//    stop:function(e){
+//      squareEnd = (findSquare(e.pageX, e.pageY))
+//      movePiece(squareStart, squareEnd, e)
+//    }
+   
+// })
+
+function setFromFEN(fen){
+  function fenArray(rankFEN){
+    var re = /\d/;
+    var thisRank = rankFEN.split('')
+    var newRank = []
+    for (var i=0; i<thisRank.length; i++){
+      var blanks = thisRank[i].match(re)
+      if (blanks){
+        for (var j=0; j<blanks[0]; j++)
+          newRank.push('1')
+      } else {
+        newRank.push(thisRank[i])}
+    }
+    return newRank
+  }
+  var pieces = {k:'bking',
+                q:'bqueen',
+                b:'bbishop',
+                n:'bknight',
+                r:'brook',
+                p:'bpawn',
+                K:'wking',
+                Q:'wqueen',
+                B:'wbishop',
+                N:'wknight',
+                R:'wrook',
+                P:'wpawn',
+                1:null}
+  fen = fen.split(' ')
+  var chessFiles = 'abcdefgh'
+  var position = fen[0]
+  var boardSetup = {}
+  position = position.split('/')
+  position.reverse() // So position[0+1] will be rank 1
+  for (var i=0; i<position.length; i++){
+    var rankArray = fenArray(position[i])
+    var thisRank = i+1
+    for (var k=0; k<rankArray.length; k++){
+      var thisFile = chessFiles[k]
+      var thisSquare = thisFile + thisRank
+      if (pieces[rankArray[k]] != null){
+        setPiece(thisSquare, pieces[rankArray[k]])
+      }
+    }
+  }
+}
+
+var startPosition ='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
+setFromFEN(startPosition)
 drawAllPieces()

@@ -6,17 +6,28 @@ board * {
     background-color:#8498D9;
     margin:0px;
     position:absolute;    
+    z-index:-1;
 }
 
 .light-square {
     background-color:#A1B7FF;
     margin:0px;
     position:absolute;    
+    z-index:-1;
 }
 
 .chess-piece {
-    text-align:center;
-    position:absolute;    
+    position:absolute;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.chess-piece:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
 }
 
 .white-piece {

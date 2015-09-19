@@ -127,7 +127,7 @@ class HackerNewsComments:
         self.save_comments()
 
 def download():
-    hn = HackerNewsDownload(pages=1, path=settings.download_path)
+    hn = HackerNewsDownload(pages=settings.pages, path=settings.download_path)
     hn.main()
     
 def parse():

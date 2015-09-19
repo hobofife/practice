@@ -12,5 +12,5 @@ tmp/
 commit.txt
 .ropeproject*
 *.db
-.html
-.json
+*.html
+*.json

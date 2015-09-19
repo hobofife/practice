@@ -1,2 +1,2 @@
 # hackernews-scraper
-Watch out for brogramming antics on HN
+Early detection of typical HN nonsense

@@ -1,0 +1,16 @@
+\#*
+\.#*
+*.*~
+*~
+*.pyc
+tmp*
+*_tmp*
+tmp/
+.DS_Store
+/test/
+*/test/*
+commit.txt
+.ropeproject*
+*.db
+/*.egg-info/
+/dist/

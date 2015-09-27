@@ -1,4 +1,3 @@
-
 // Definitely gonna want a 'sweeper' object and an init function, 
 // but just prototyping stuff out now
 
@@ -9,8 +8,6 @@ function getAngles(){
     var thisAngle = i * (Math.PI/180)
     angles.push(thisAngle)
   }
-
-  // 0.0174532925
 
   return angles
 }
@@ -24,8 +21,6 @@ function drawCircle(ctx){
 function drawLine(ctx, radians){
   console.log(radians)
   var path = new Path2D()
-  // var x = 250 + 200 * Math.cos(radians * Math.PI)
-  // var y = 250 + 200 * Math.sin(radians * Math.PI)
   var x = 250 + 200 * Math.cos(radians)
   var y = 250 + 200 * Math.sin(radians)
   path.moveTo(250, 250)

@@ -1,0 +1,47 @@
+board * {
+    position:absolute;
+}
+
+.dark-square {
+    background-color:#8498D9;
+    margin:0px;
+    position:absolute;    
+    z-index:-1;
+}
+
+.light-square {
+    background-color:#A1B7FF;
+    margin:0px;
+    position:absolute;    
+    z-index:-1;
+}
+
+.chess-piece {
+    position:absolute;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.chess-piece:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.white-piece {
+    color:#FFF;
+}
+
+.black-piece {
+    color:#111;
+}
+
+#piece-box .light-square {
+    background-color:#eee;
+}
+
+#piece-box .dark-square {
+    background-color:#edd;
+}

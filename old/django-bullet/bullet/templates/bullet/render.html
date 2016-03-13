@@ -1,0 +1,11 @@
+<p>Do you want to render the site?</p>
+
+<p>The existing files in the output directory will be deleted at the beginning of this process.</p>
+
+<form method="POST" id="render_confirm" action="{% url 'bullet:build' %}">
+  {% csrf_token %}
+  <!-- Output dir: <input type="text" name="output_path" value="{{ default_dir }}"> -->
+  <!-- <br> -->
+  
+  <input type="submit" value="Render">
+</form>

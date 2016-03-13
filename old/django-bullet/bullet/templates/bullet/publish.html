@@ -1,0 +1,11 @@
+<p>Do you want to render the site?</p>
+
+<p>The existing files on the server will be overwritten</p>
+
+<form method="POST" id="render_confirm" action="{% url 'bullet:sync' %}">
+  {% csrf_token %}
+  <!-- Output dir: <input type="text" name="output_path" value="{{ default_dir }}"> -->
+  <!-- <br> -->
+  
+  <input type="submit" value="Publish">
+</form>

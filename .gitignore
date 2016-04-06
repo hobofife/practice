@@ -8,8 +8,6 @@ tmp*
 tmp/
 .DS_Store
 old/
-/test/
-*/test/*
 commit.txt
 lint.html
 lint.txt
@@ -22,3 +20,4 @@ lint.txt
 settings.py
 /static/*
 node_modules/
+bin/

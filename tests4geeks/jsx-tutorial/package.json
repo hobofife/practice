@@ -1,0 +1,16 @@
+{
+  "name": "jsx-tutorial",
+  "version": "1.0.0",
+  "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "babel src -d js"
+  },
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babel": "^6.5.2"
+  },
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,16 @@
+# https://github.com/GoogleCloudPlatform/appengine-django-skeleton/blob/master/app.yaml
+
+runtime: python27
+api_version: 1
+threadsafe: yes
+version: 1
+
+handlers:
+- url: /static
+  static_dir: static/
+- url: .*
+  script: hello_gae.wsgi.application
+
+libraries:
+- name: MySQLdb
+  version: 1.2.5

@@ -1,0 +1,2 @@
+* CloudSQL
+  - Since the AppEngine app and the CloudSQL instance are in the same project, I shouldn't need to setup any permissions to access the database from within the application code.

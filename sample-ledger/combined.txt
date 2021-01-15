@@ -1,0 +1,8 @@
+; -*- mode: ledger -*-
+
+include personal.txt
+include business.txt
+
+; 2020-09-05 * Balance Assertion 
+;     Equity:Adjustments                             0 USD
+;     Assets:Checking       -0 USD = 9524 USD

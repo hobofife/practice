@@ -1,0 +1,28 @@
+; -*- mode: ledger -*-
+
+include accounts.txt
+include payees.txt
+
+2020-09-03 * Capital Contribution - Tom
+    Assets:Checking                           500.00 USD
+    Equity:Capital Contributions:Tom
+
+2020-09-03 * Nicolas L. - Software Contractor
+    Expenses:Software Development             500.00 USD
+    Assets:Checking
+
+2020-09-04 * Amazon
+    Assets:Checking                            24.00 USD
+    Income:Sales:Illustrated Chess
+
+2020-09-06 * Server Fees
+    Expenses:Equipment:Servers                 50.00 USD
+    Liabilities:Credit Card:American Express
+
+2020-09-03 * Capital Contribution - Tom
+    Assets:Checking                           50.00 USD
+    Equity:Capital Contributions:Tom
+
+2020-09-10 * American Express
+    Liabilities:Credit Card:American Express   50.00 USD
+    Assets:Checking

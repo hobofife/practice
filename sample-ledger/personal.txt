@@ -1,0 +1,28 @@
+; -*- mode: ledger -*-
+
+include accounts.txt
+include payees.txt
+
+2020-09-01 * Checking balance
+    Assets:Checking                         10000.00 USD
+    Equity:Opening Balances
+
+2020-09-02 * Coffee Shop
+    Expenses:Lifestyle:Restaurants             10.00 USD
+    Liabilities:Credit Card:American Express
+
+2020-09-03 * Capital Contribution - V8 Publishing
+    Expenses:Capital Contribution:V8 Publishing  500.00 USD
+    Assets:Checking
+
+2020-09-06 * Coffee Shop
+    Expenses:Lifestyle:Restaurants             14.00 USD
+    Liabilities:Credit Card:American Express
+
+2020-09-10 * American Express
+    Liabilities:Credit Card:American Express   24.00 USD
+    Assets:Checking
+
+2020-09-10 * Capital Contribution - Tom
+    Equity:Capital Contributions:Tom           50.00 USD
+    Assets:Checking                           
